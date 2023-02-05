@@ -6,7 +6,7 @@ class UserController {
   // @route Get All User
   async getUsers(req, res) {
     try {
-      const users = await User.find({});
+      const users = await User.find({}).select("-password");
       res.json({
         message: "Lấy danh sách user thành công",
         success: true,
@@ -25,7 +25,21 @@ class UserController {
   async deleteUser(req, res) {
     try {
       const userId = req.params.id;
-      const deletedUser = await User.findOneAndDelete({ _id: userId });
+
+      // Check user is admin?
+      const user = await User.findById(req.params.id).select("-password");
+      if (user.isAdmin) {
+        return res.status(400).json({
+          message: "Không thể xóa admin",
+          success: false,
+        });
+      }
+
+      // All good, delete user
+
+      const deletedUser = await User.findOneAndDelete({ _id: userId }).select(
+        "-password"
+      );
 
       // user not found
       if (!deletedUser) {

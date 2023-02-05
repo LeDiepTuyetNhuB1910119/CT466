@@ -5,6 +5,8 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRouter = require("./app/routes/auth");
+const userRouter = require("./app/routes/user");
+const categoryRouter = require("./app/routes/category");
 
 const connectDB = async () => {
   try {
@@ -26,6 +28,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use("/api/auth", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/categories", categoryRouter);
 
 const PORT = 5000;
 
