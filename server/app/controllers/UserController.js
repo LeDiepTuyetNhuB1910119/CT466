@@ -114,6 +114,7 @@ class UserController {
         message: "Tạo tài khoản thành công",
         success: true,
         accessToken,
+        user: newUser,
       });
     } catch (error) {
       console.log(error);
