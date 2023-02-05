@@ -62,6 +62,68 @@ class UserController {
     }
   }
 
+  // @route create user by admin
+  async createUser(req, res) {
+    const { username, password, confirmPassword, isAdmin } = req.body;
+
+    // Validation
+    if (!username || !password || !confirmPassword || !isAdmin) {
+      return res.status(400).json({
+        message: "Nhập thiếu trường dữ liệu",
+        success: false,
+      });
+    }
+    try {
+      // Check for exist user
+      const user = await User.findOne({ username });
+      if (user) {
+        return res.status(400).json({
+          message: "Username đã tồn tại",
+          success: false,
+        });
+      }
+
+      // Check password
+      if (password != confirmPassword) {
+        return res.status(403).json({
+          message: "Password không khớp",
+          success: false,
+        });
+      }
+
+      // All good, create new user
+      const hashedPassword = await argon2.hash(password);
+      const newUser = new User({
+        username,
+        password: hashedPassword,
+        isAdmin,
+      });
+      newUser.save();
+
+      // Return token
+      const accessToken = jwt.sign(
+        {
+          _id: newUser._id,
+          username: newUser.username,
+          isAdmin: newUser.isAdmin,
+        },
+        process.env.ACCESS_TOKEN_SECRET
+      );
+
+      res.json({
+        message: "Tạo tài khoản thành công",
+        success: true,
+        accessToken,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Máy chủ không phản hồi",
+        success: false,
+      });
+    }
+  }
+
   // @route Check if user is logged in
   async getUser(req, res) {
     try {
@@ -88,6 +150,7 @@ class UserController {
   // @route Register user
   async register(req, res) {
     const { username, password, confirmPassword } = req.body;
+    const isAdmin = false;
 
     // Validation
     if (!username || !password || !confirmPassword) {
@@ -119,6 +182,7 @@ class UserController {
       const newUser = new User({
         username,
         password: hashedPassword,
+        isAdmin,
       });
       newUser.save();
 
