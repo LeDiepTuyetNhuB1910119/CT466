@@ -28,6 +28,13 @@ class UserController {
 
       // Check user is admin?
       const user = await User.findById(req.params.id).select("-password");
+      if (!user) {
+        return res.status(400).json({
+          message: "Không tìm thấy user",
+          success: false,
+        });
+      }
+
       if (user.isAdmin) {
         return res.status(400).json({
           message: "Không thể xóa admin",
@@ -42,17 +49,13 @@ class UserController {
       );
 
       // user not found
-      if (!deletedUser) {
-        return res.status(400).json({
-          message: "Không tìm thấy user",
-          success: false,
+      if (deletedUser) {
+        return res.json({
+          message: "Xóa user thành công",
+          success: true,
+          user: deletedUser,
         });
       }
-      res.json({
-        message: "Xóa user thành công",
-        success: true,
-        user: deletedUser,
-      });
     } catch (error) {
       console.log(error);
       res.status(500).json({

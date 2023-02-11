@@ -7,6 +7,7 @@ require("dotenv").config();
 const authRouter = require("./app/routes/auth");
 const userRouter = require("./app/routes/user");
 const categoryRouter = require("./app/routes/category");
+const bookRouter = require("./app/routes/book");
 
 const connectDB = async () => {
   try {
@@ -30,6 +31,7 @@ app.use(cors());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/categories", categoryRouter);
+app.use("/api/books", bookRouter);
 
 const PORT = 5000;
 
