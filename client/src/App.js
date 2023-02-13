@@ -4,6 +4,7 @@ import Landing from "./components/layout/Landing";
 import Home from "./views/Home";
 import About from "./views/About";
 import AuthContextProvider from "./contexts/AuthContext";
+import ProtectedRoute from "./routing/ProtectedRoute";
 
 function App() {
   return (
@@ -11,8 +12,8 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/" component={Landing} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/about" component={About} />
+          <ProtectedRoute exact path="/home" component={Home} />
+          <ProtectedRoute exact path="/about" component={About} />
         </Switch>
       </Router>
     </AuthContextProvider>

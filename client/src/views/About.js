@@ -7,7 +7,6 @@ import NavbarMenu from "../components/layout/NavbarMenu";
 const About = () => {
   return (
     <>
-      <NavbarMenu />
       <Row className="mt-5" style={{ marginRight: 0 }}>
         <Col className="text-center">
           <Button
