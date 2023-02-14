@@ -48,6 +48,28 @@ const AuthContextProvider = ({ children }) => {
     loadingUser();
   }, []);
 
+  // Login
+  const loginUser = async (userForm) => {
+    try {
+      const response = await axios.post(`${apiUrl}/auth/login`, userForm);
+      if (response.data.success) {
+        localStorage.setItem(
+          LOCAL_STORAGE_TOKEN_NAME,
+          response.data.accessToken
+          // khi success, gán accessToken return từ server route auth/login
+          // cho localStrorage
+        );
+      }
+
+      await loadUser(); // kiểm tra lại user có token k, có trong csdl k
+
+      return response.data;
+    } catch (error) {
+      if (error.response.data) return error.response.data; // lỗi lấy từ backend
+      else return { success: false, message: error.message }; // lỗi khác
+    }
+  };
+
   // Logout
   const logoutUser = () => {
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME);
@@ -61,6 +83,7 @@ const AuthContextProvider = ({ children }) => {
   const authContextData = {
     authState,
     loadUser,
+    loginUser,
     logoutUser,
   };
 
