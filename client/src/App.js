@@ -5,7 +5,10 @@ import Home from "./views/Home";
 import About from "./views/About";
 import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./routing/ProtectedRoute";
+import AdminRoute from "./routing/AdminRoute";
 import Auth from "./views/Auth";
+import LandingAdmin from "./components/layout/LandingAdmin";
+import BookList from "./views/Admin/BookList";
 
 function App() {
   return (
@@ -25,6 +28,8 @@ function App() {
           <Route exact path="/" component={Landing} />
           <ProtectedRoute exact path="/home" component={Home} />
           <ProtectedRoute exact path="/about" component={About} />
+          <AdminRoute exact path="/admin" component={LandingAdmin} />
+          <AdminRoute exact path="/admin/books" component={BookList} />
         </Switch>
       </Router>
     </AuthContextProvider>
