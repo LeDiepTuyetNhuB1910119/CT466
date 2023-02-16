@@ -9,6 +9,8 @@ import AdminRoute from "./routing/AdminRoute";
 import Auth from "./views/Auth";
 import LandingAdmin from "./components/layout/LandingAdmin";
 import BookList from "./views/Admin/BookList";
+import CategoryList from "./views/Admin/CategoryList";
+import UserList from "./views/Admin/UserList";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
           <ProtectedRoute exact path="/about" component={About} />
           <AdminRoute exact path="/admin" component={LandingAdmin} />
           <AdminRoute exact path="/admin/books" component={BookList} />
+          <AdminRoute exact path="/admin/categories" component={CategoryList} />
+          <AdminRoute exact path="/admin/users" component={UserList} />
         </Switch>
       </Router>
     </AuthContextProvider>
