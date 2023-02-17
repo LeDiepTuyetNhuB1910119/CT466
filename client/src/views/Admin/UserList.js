@@ -68,7 +68,9 @@ const UserList = () => {
                 <tr key={user._id} className="align-middle">
                   <td>{user._id}</td>
                   <td>{user.username}</td>
-                  <td>{user.isAdmin ? "true" : "false"}</td>
+                  <td className="text-center">
+                    {user.isAdmin ? "true" : "false"}
+                  </td>
                   <td className="text-center">
                     <Button
                       className="delete-button"
@@ -107,6 +109,12 @@ const UserList = () => {
             Create
           </Button>
         </div>
+
+        <div className="mb-4">
+          <b>Total: </b>
+          <b className="text-success font-weight-bold">{users.length}</b> users
+        </div>
+
         <div>{body}</div>
 
         {/* add user */}
