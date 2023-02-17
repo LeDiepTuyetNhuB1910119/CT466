@@ -11,31 +11,38 @@ import LandingAdmin from "./components/layout/LandingAdmin";
 import BookList from "./views/Admin/BookList";
 import CategoryList from "./views/Admin/CategoryList";
 import UserList from "./views/Admin/UserList";
+import UserContextProvider from "./contexts/UserContext";
 
 function App() {
   return (
     <AuthContextProvider>
-      <Router>
-        <Route
-          exact
-          path="/login"
-          render={(props) => <Auth {...props} authRoute="login" />}
-        />
-        <Route
-          exact
-          path="/register"
-          render={(props) => <Auth {...props} authRoute="register" />}
-        />
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          <ProtectedRoute exact path="/home" component={Home} />
-          <ProtectedRoute exact path="/about" component={About} />
-          <AdminRoute exact path="/admin" component={LandingAdmin} />
-          <AdminRoute exact path="/admin/books" component={BookList} />
-          <AdminRoute exact path="/admin/categories" component={CategoryList} />
-          <AdminRoute exact path="/admin/users" component={UserList} />
-        </Switch>
-      </Router>
+      <UserContextProvider>
+        <Router>
+          <Route
+            exact
+            path="/login"
+            render={(props) => <Auth {...props} authRoute="login" />}
+          />
+          <Route
+            exact
+            path="/register"
+            render={(props) => <Auth {...props} authRoute="register" />}
+          />
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <ProtectedRoute exact path="/home" component={Home} />
+            <ProtectedRoute exact path="/about" component={About} />
+            <AdminRoute exact path="/admin" component={LandingAdmin} />
+            <AdminRoute exact path="/admin/books" component={BookList} />
+            <AdminRoute
+              exact
+              path="/admin/categories"
+              component={CategoryList}
+            />
+            <AdminRoute exact path="/admin/users" component={UserList} />
+          </Switch>
+        </Router>
+      </UserContextProvider>
     </AuthContextProvider>
   );
 }
