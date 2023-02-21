@@ -1,6 +1,8 @@
 const Book = require("../models/BookModel");
 require("dotenv").config();
 
+const cloudinary = require("../utils/cloudinary");
+
 class BookController {
   // @route get all book
   async getBooks(req, res) {
@@ -74,10 +76,10 @@ class BookController {
 
   // @route create book
   async createBook(req, res) {
-    const { title, description, category } = req.body;
+    const { title, description, category, image } = req.body;
 
     // Validation
-    if (!title || !category) {
+    if (!title || !category || !image) {
       return res.status(400).json({
         message: "Nhập thiếu trường dữ liệu",
         success: false,
@@ -94,21 +96,31 @@ class BookController {
         });
       }
 
-      // All good, create new book
-      const newBook = new Book({
-        title,
-        description,
-        category,
-        user: req.user._id,
-      });
+      // All good, upload image
+      if (image) {
+        const uploadRes = await cloudinary.uploader.upload(image, {
+          upload_preset: "image_book",
+        });
 
-      await newBook.save();
+        if (uploadRes) {
+          // All good, create new book
+          const newBook = new Book({
+            title,
+            description,
+            category,
+            user: req.user._id,
+            image: uploadRes,
+          });
 
-      res.json({
-        message: "Tạo review thành công",
-        success: true,
-        book: newBook,
-      });
+          await newBook.save();
+
+          res.json({
+            message: "Tạo review thành công",
+            success: true,
+            book: newBook,
+          });
+        }
+      }
     } catch (error) {
       console.log(error);
       res.status(500).json({
