@@ -166,12 +166,16 @@ class BookController {
     }
 
     // kiểm tra trùng title
-    const bookTitle = await Book.findOne({ title: title }); // lấy book
+    const bookTitle = await Book.findOne({ title: title }); // lấy book theo title
+    const thisBook = await Book.findOne({ title: title, _id: bookId }); // kiểm tra title có thuộc book đang xét
+
     if (bookTitle) {
-      return res.status(400).json({
-        message: "Tiêu đề này đã tồn tại",
-        success: false,
-      });
+      if (!thisBook) {
+        return res.status(400).json({
+          message: "Tiêu đề này đã tồn tại",
+          success: false,
+        });
+      }
     }
 
     try {
