@@ -5,6 +5,8 @@ import {
   BOOKS_LOADED_SUCCESS,
   BOOKS_LOADED_FAIL,
   ADD_BOOK,
+  FIND_BOOK,
+  UPDATE_BOOK,
 } from "./constants";
 import axios from "axios";
 
@@ -20,6 +22,7 @@ const BookContextProvider = ({ children }) => {
 
   // show Toast, modal
   const [showAddBookModal, setShowAddBookModal] = useState(false);
+  const [showUpdateBookModal, setShowUpdateBookModal] = useState(false);
   const [showToast, setShowToast] = useState({
     show: false,
     message: "",
@@ -60,6 +63,33 @@ const BookContextProvider = ({ children }) => {
     }
   };
 
+  // function find book
+  const findBook = (bookId) => {
+    const book = bookState.books.find((book) => book._id === bookId);
+    dispatch({ type: FIND_BOOK, payload: book });
+  };
+
+  // function update category
+  const updateBook = async (updatedBook) => {
+    try {
+      const response = await axios.put(
+        `${apiUrl}/books/${updatedBook.book._id}`,
+        updatedBook
+      );
+      if (response.data.success) {
+        dispatch({
+          type: UPDATE_BOOK,
+          payload: response.data.book,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // book context data
   const bookContextData = {
     bookState,
@@ -69,6 +99,10 @@ const BookContextProvider = ({ children }) => {
     setShowAddBookModal,
     showToast,
     setShowToast,
+    findBook,
+    updateBook,
+    showUpdateBookModal,
+    setShowUpdateBookModal,
   };
 
   // return

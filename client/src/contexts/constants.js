@@ -18,3 +18,5 @@ export const UPDATE_CATEGORY = "UPDATE_CATEGORY";
 export const BOOKS_LOADED_SUCCESS = "BOOKS_LOADED_SUCCESS";
 export const BOOKS_LOADED_FAIL = "BOOKS_LOADED_FAIL";
 export const ADD_BOOK = "ADD_BOOK";
+export const FIND_BOOK = "FIND_BOOK";
+export const UPDATE_BOOK = "UPDATE_BOOK";

@@ -132,8 +132,9 @@ class BookController {
 
   // @route update book
   async updateBook(req, res) {
-    const { title, description, category } = req.body;
+    const { title, description, category, image } = req.body.book;
     const bookId = req.params.id;
+    const newImage = req.body.image;
 
     // kiểm tra có tồn tại
     const book = await Book.findOne({ _id: bookId }); // lấy book
@@ -172,24 +173,64 @@ class BookController {
         success: false,
       });
     }
-    try {
-      // All good, update book
-      let updatedBook = { title, description, category };
-      updatedBook = await Book.findByIdAndUpdate({ _id: bookId }, updatedBook, {
-        new: true,
-      });
 
-      if (!updatedBook) {
-        return res.status(400).json({
-          message: "Không tìm thấy bài review",
-          success: false,
+    try {
+      // Check exist new image
+      if (newImage) {
+        // xóa ảnh ban đầu
+        const destroyResponse = await cloudinary.uploader.destroy(
+          image.public_id
+        );
+
+        // up ảnh mới
+        if (destroyResponse) {
+          const uploadRes = await cloudinary.uploader.upload(newImage, {
+            upload_preset: "image_book",
+          });
+
+          // update review
+          if (uploadRes) {
+            const updatedBook = await Book.findByIdAndUpdate(
+              { _id: bookId },
+              {
+                title,
+                description,
+                category,
+                image: uploadRes,
+              },
+              {
+                new: true,
+              }
+            );
+            res.json({
+              message: "Cập nhật review thành công",
+              success: true,
+              book: updatedBook,
+            });
+          }
+        }
+      } else {
+        let updatedBook = { title, description, category, image };
+        updatedBook = await Book.findByIdAndUpdate(
+          { _id: bookId },
+          updatedBook,
+          {
+            new: true,
+          }
+        );
+
+        if (!updatedBook) {
+          return res.status(400).json({
+            message: "Không tìm thấy bài review",
+            success: false,
+          });
+        }
+        res.json({
+          message: "Cập nhật review thành công",
+          success: true,
+          book: updatedBook,
         });
       }
-      res.json({
-        message: "Cập nhật review thành công",
-        success: true,
-        book: updatedBook,
-      });
     } catch (error) {
       console.log(error);
       res.status(500).json({

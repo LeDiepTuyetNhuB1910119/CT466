@@ -2,6 +2,8 @@ import {
   BOOKS_LOADED_SUCCESS,
   BOOKS_LOADED_FAIL,
   ADD_BOOK,
+  FIND_BOOK,
+  UPDATE_BOOK,
 } from "../contexts/constants";
 
 export const bookReducer = (state, action) => {
@@ -26,6 +28,22 @@ export const bookReducer = (state, action) => {
         ...state,
         books: [...state.books, payload],
       };
+
+    case FIND_BOOK:
+      return {
+        ...state,
+        book: payload,
+      };
+
+    case UPDATE_BOOK:
+      const newBooks = state.books.map((book) =>
+        book._id === payload._id ? payload : book
+      );
+      return {
+        ...state,
+        books: newBooks,
+      };
+
     default:
       return state;
   }
