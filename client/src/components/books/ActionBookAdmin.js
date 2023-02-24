@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Button from "react-bootstrap/Button";
 
 import viewIcon from "../../assets/view.png";
 import editIcon from "../../assets/pencil.svg";
 import deleteIcon from "../../assets/trash.svg";
 
+import { BookContext } from "../../contexts/BookContext";
+
 const ActionBookAdmin = ({ _id }) => {
+  // book context
+  const { findBook, setShowUpdateBookModal } = useContext(BookContext);
+
   // function view detail book
   const infoBook = (bookId) => {
     console.log("info book");
@@ -18,7 +23,8 @@ const ActionBookAdmin = ({ _id }) => {
 
   // function handler update book
   const handleUpdateBook = async (bookId) => {
-    console.log("update book");
+    findBook(bookId);
+    setShowUpdateBookModal(true);
   };
 
   // return
