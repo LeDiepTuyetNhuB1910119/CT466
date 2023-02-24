@@ -8,6 +8,7 @@ import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
 import ActionBookAdmin from "../../components/books/ActionBookAdmin";
 import AddBookModal from "../../components/books/AddBookModal";
+import UpdateBookModal from "../../components/books/UpdateBookModal";
 
 const BookList = () => {
   // book context
@@ -51,6 +52,7 @@ const BookList = () => {
                 <th width="100">Image</th>
                 <th>Category</th>
                 <th>Poster</th>
+                <th>View</th>
                 <th width="200">Action</th>
               </tr>
             </thead>
@@ -70,6 +72,7 @@ const BookList = () => {
                   <td className="text-center">
                     {book.user ? book.user.username : "unknow"}
                   </td>
+                  <td className="text-center">{book.view}</td>
                   <td className="text-center">
                     <ActionBookAdmin _id={book._id} />
                   </td>
@@ -104,7 +107,11 @@ const BookList = () => {
 
         <div>{body}</div>
 
+        {/* add book */}
         <AddBookModal />
+
+        {/* update book */}
+        {book !== null && <UpdateBookModal />}
 
         {/* Show toast */}
         <Toast

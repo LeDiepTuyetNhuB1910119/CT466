@@ -8,6 +8,7 @@ const BookSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: "users" },
     category: { type: Schema.Types.ObjectId, ref: "categories" },
     image: { type: Object, required: true },
+    view: { type: Number, default: 0 },
   },
   {
     timestamps: true,
