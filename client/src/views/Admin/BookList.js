@@ -53,6 +53,7 @@ const BookList = () => {
                 <th>Category</th>
                 <th>Poster</th>
                 <th>View</th>
+                <th>Created At</th>
                 <th width="200">Action</th>
               </tr>
             </thead>
@@ -73,6 +74,7 @@ const BookList = () => {
                     {book.user ? book.user.username : "unknow"}
                   </td>
                   <td className="text-center">{book.view}</td>
+                  <td className="text-center">{book.createdAt.slice(0, 10)}</td>
                   <td className="text-center">
                     <ActionBookAdmin _id={book._id} />
                   </td>

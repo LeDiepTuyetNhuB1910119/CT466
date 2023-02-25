@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+
 import Button from "react-bootstrap/Button";
 
 import viewIcon from "../../assets/view.png";
@@ -11,9 +13,13 @@ const ActionBookAdmin = ({ _id }) => {
   // book context
   const { findBook, setShowUpdateBookModal } = useContext(BookContext);
 
+  // use history
+  const history = useHistory();
+
   // function view detail book
   const infoBook = (bookId) => {
-    console.log("info book");
+    const path = `/admin/books/info/${bookId}`;
+    history.push(path);
   };
 
   // function handler delete book

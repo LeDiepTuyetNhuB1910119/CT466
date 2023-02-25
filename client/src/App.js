@@ -14,6 +14,7 @@ import UserList from "./views/Admin/UserList";
 import UserContextProvider from "./contexts/UserContext";
 import CategoryContextProvider from "./contexts/CategoryContext";
 import BookContextProvider from "./contexts/BookContext";
+import InfoBook from "./components/books/InfoBook";
 
 function App() {
   return (
@@ -44,6 +45,11 @@ function App() {
                   component={CategoryList}
                 />
                 <AdminRoute exact path="/admin/users" component={UserList} />
+                <AdminRoute
+                  exact
+                  path="/admin/books/info/:id"
+                  component={InfoBook}
+                />
               </Switch>
             </Router>
           </BookContextProvider>
