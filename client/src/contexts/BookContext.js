@@ -7,6 +7,7 @@ import {
   ADD_BOOK,
   FIND_BOOK,
   UPDATE_BOOK,
+  GET_BOOK,
 } from "./constants";
 import axios from "axios";
 
@@ -42,6 +43,23 @@ const BookContextProvider = ({ children }) => {
       }
     } catch (error) {
       dispatch({ type: BOOKS_LOADED_FAIL });
+    }
+  };
+
+  // function get one book by id
+  const getOneBook = async (bookId) => {
+    try {
+      const response = await axios.get(`${apiUrl}/books/${bookId}`);
+      if (response.data.success) {
+        dispatch({
+          type: GET_BOOK,
+          payload: response.data.book,
+        });
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
     }
   };
 
@@ -94,6 +112,7 @@ const BookContextProvider = ({ children }) => {
   const bookContextData = {
     bookState,
     getBooks,
+    getOneBook,
     createBook,
     showAddBookModal,
     setShowAddBookModal,
