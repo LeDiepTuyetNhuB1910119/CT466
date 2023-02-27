@@ -39,6 +39,9 @@ const NavbarAdmin = () => {
             <Nav.Link to="/admin/categories" as={Link}>
               Categories
             </Nav.Link>
+            <Nav.Link to="/admin/comments" as={Link}>
+              Comments
+            </Nav.Link>
             <Nav.Link to="/admin/users" as={Link}>
               Users
             </Nav.Link>
