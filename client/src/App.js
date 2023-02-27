@@ -11,9 +11,11 @@ import LandingAdmin from "./components/layout/LandingAdmin";
 import BookList from "./views/Admin/BookList";
 import CategoryList from "./views/Admin/CategoryList";
 import UserList from "./views/Admin/UserList";
+import CommentList from "./views/Admin/CommentList.js";
 import UserContextProvider from "./contexts/UserContext";
 import CategoryContextProvider from "./contexts/CategoryContext";
 import BookContextProvider from "./contexts/BookContext";
+import CommentContextProvider from "./contexts/CommentContext";
 import InfoBook from "./components/books/InfoBook";
 
 function App() {
@@ -22,36 +24,43 @@ function App() {
       <UserContextProvider>
         <CategoryContextProvider>
           <BookContextProvider>
-            <Router>
-              <Route
-                exact
-                path="/login"
-                render={(props) => <Auth {...props} authRoute="login" />}
-              />
-              <Route
-                exact
-                path="/register"
-                render={(props) => <Auth {...props} authRoute="register" />}
-              />
-              <Switch>
-                <Route exact path="/" component={Landing} />
-                <ProtectedRoute exact path="/home" component={Home} />
-                <ProtectedRoute exact path="/about" component={About} />
-                <AdminRoute exact path="/admin" component={LandingAdmin} />
-                <AdminRoute exact path="/admin/books" component={BookList} />
-                <AdminRoute
+            <CommentContextProvider>
+              <Router>
+                <Route
                   exact
-                  path="/admin/categories"
-                  component={CategoryList}
+                  path="/login"
+                  render={(props) => <Auth {...props} authRoute="login" />}
                 />
-                <AdminRoute exact path="/admin/users" component={UserList} />
-                <AdminRoute
+                <Route
                   exact
-                  path="/admin/books/info/:id"
-                  component={InfoBook}
+                  path="/register"
+                  render={(props) => <Auth {...props} authRoute="register" />}
                 />
-              </Switch>
-            </Router>
+                <Switch>
+                  <Route exact path="/" component={Landing} />
+                  <ProtectedRoute exact path="/home" component={Home} />
+                  <ProtectedRoute exact path="/about" component={About} />
+                  <AdminRoute exact path="/admin" component={LandingAdmin} />
+                  <AdminRoute exact path="/admin/books" component={BookList} />
+                  <AdminRoute
+                    exact
+                    path="/admin/categories"
+                    component={CategoryList}
+                  />
+                  <AdminRoute exact path="/admin/users" component={UserList} />
+                  <AdminRoute
+                    exact
+                    path="/admin/comments"
+                    component={CommentList}
+                  />
+                  <AdminRoute
+                    exact
+                    path="/admin/books/info/:id"
+                    component={InfoBook}
+                  />
+                </Switch>
+              </Router>
+            </CommentContextProvider>
           </BookContextProvider>
         </CategoryContextProvider>
       </UserContextProvider>
