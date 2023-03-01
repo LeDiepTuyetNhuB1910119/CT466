@@ -11,7 +11,8 @@ import { BookContext } from "../../contexts/BookContext";
 
 const ActionBookAdmin = ({ _id }) => {
   // book context
-  const { findBook, setShowUpdateBookModal } = useContext(BookContext);
+  const { findBook, setShowUpdateBookModal, deleteBook, setShowToast } =
+    useContext(BookContext);
 
   // use history
   const history = useHistory();
@@ -24,7 +25,12 @@ const ActionBookAdmin = ({ _id }) => {
 
   // function handler delete book
   const handleDeleteBook = async (bookId) => {
-    console.log("delete book");
+    const { success, message } = await deleteBook(bookId);
+    setShowToast({
+      show: true,
+      message,
+      type: success ? "success" : "danger",
+    });
   };
 
   // function handler update book
