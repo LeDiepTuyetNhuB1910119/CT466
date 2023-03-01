@@ -8,6 +8,7 @@ import {
   FIND_BOOK,
   UPDATE_BOOK,
   GET_BOOK,
+  DELETE_BOOK,
 } from "./constants";
 import axios from "axios";
 
@@ -108,6 +109,24 @@ const BookContextProvider = ({ children }) => {
     }
   };
 
+  // function delete book
+  const deleteBook = async (bookId) => {
+    try {
+      const response = await axios.delete(`${apiUrl}/books/${bookId}`);
+      if (response.data.success) {
+        dispatch({
+          type: DELETE_BOOK,
+          payload: bookId,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // book context data
   const bookContextData = {
     bookState,
@@ -122,6 +141,7 @@ const BookContextProvider = ({ children }) => {
     updateBook,
     showUpdateBookModal,
     setShowUpdateBookModal,
+    deleteBook,
   };
 
   // return

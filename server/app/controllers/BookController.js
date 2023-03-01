@@ -1,4 +1,5 @@
 const Book = require("../models/BookModel");
+const Comment = require("../models/CommentModel");
 require("dotenv").config();
 
 const cloudinary = require("../utils/cloudinary");
@@ -244,7 +245,7 @@ class BookController {
     }
   }
 
-  // // @route delete book
+  // @route delete book
   async deleteBook(req, res) {
     try {
       const bookId = req.params.id;
@@ -275,21 +276,49 @@ class BookController {
         });
       }
 
-      const deletedBook = await Book.findOneAndDelete({ _id: bookId });
+      if (book.image.public_id) {
+        // tiến hành xóa ảnh trên cloudinary
+        const destroyResponse = await cloudinary.uploader.destroy(
+          book.image.public_id
+        );
 
-      // book not found
-      if (!deletedBook) {
-        return res.status(400).json({
-          message: "Không tìm thấy review book",
-          success: false,
-        });
+        // nếu đã xóa ảnh, tiến hành xóa comment của book
+        if (destroyResponse) {
+          const deletedComments = await Comment.deleteMany({
+            book: bookId,
+          });
+
+          // comment not found
+          if (deletedComments) {
+            // nếu đã xóa ảnh + comment -> xóa book
+            const deletedBook = await Book.findOneAndDelete({ _id: bookId });
+
+            // book not found
+            if (!deletedBook) {
+              return res.status(400).json({
+                message: "Không tìm thấy review book",
+                success: false,
+              });
+            }
+
+            res.json({
+              message: "Xóa bài review book thành công",
+              success: true,
+              book: deletedBook,
+            });
+          } else {
+            return res.json({
+              message: "Không thể xóa các comments của review book",
+              success: false,
+            });
+          }
+        } else {
+          return res.json({
+            message: "Không thể xóa ảnh review book",
+            success: false,
+          });
+        }
       }
-
-      res.json({
-        message: "Xóa bài review book thành công",
-        success: true,
-        book: deletedBook,
-      });
     } catch (error) {
       console.log(error);
       res.status(500).json({

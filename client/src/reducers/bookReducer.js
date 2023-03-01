@@ -5,6 +5,7 @@ import {
   ADD_BOOK,
   FIND_BOOK,
   UPDATE_BOOK,
+  DELETE_BOOK,
 } from "../contexts/constants";
 
 export const bookReducer = (state, action) => {
@@ -49,6 +50,12 @@ export const bookReducer = (state, action) => {
       return {
         ...state,
         books: newBooks,
+      };
+
+    case DELETE_BOOK:
+      return {
+        ...state,
+        books: state.books.filter((book) => book._id !== payload),
       };
 
     default:
