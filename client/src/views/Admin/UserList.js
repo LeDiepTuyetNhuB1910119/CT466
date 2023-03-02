@@ -1,11 +1,12 @@
 import React from "react";
 import { UserContext } from "../../contexts/UserContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
+import Form from "react-bootstrap/Form";
 
 import deleteIcon from "../../assets/trash.svg";
 import AddUserByAdminModal from "../../components/users/AddUserByAdminModal";
@@ -30,6 +31,28 @@ const UserList = () => {
     gettingUsers();
   }, []);
 
+  // useState
+  const [filteredUsers, setFilteredUsers] = useState("");
+
+  // effect set filteredBook
+  useEffect(() => {
+    const setFilter = async () => {
+      setFilteredUsers(users);
+    };
+    setFilter();
+  }, [users]);
+
+  // function handle search users
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    const searchUsers = users.filter(
+      (user) =>
+        user.username.toLowerCase().includes(query.toLowerCase()) ||
+        user.isAdmin.toString().toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredUsers(searchUsers);
+  };
+
   // function handler delete user
   const handlerDeleteUser = async (userId) => {
     const { success, message } = await deleteUser(userId);
@@ -48,8 +71,8 @@ const UserList = () => {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (users.length === 0) {
-    body = <h1>Rỗng</h1>;
+  } else if (filteredUsers.length === 0) {
+    body = <p className=" text-center mt-5">Không tìm thấy thông tin</p>;
   } else {
     body = (
       <>
@@ -64,7 +87,7 @@ const UserList = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user._id} className="align-middle">
                   <td>{user._id}</td>
                   <td>{user.username}</td>
@@ -99,18 +122,32 @@ const UserList = () => {
     <>
       <Container>
         <h1 className="text-center mt-4 my-4">List users</h1>
-        <div className="d-grid d-md-flex justify-content-end my-4">
-          <Button
-            type="button"
-            onClick={() => {
-              setShowAddUserModal(true);
-            }}
-          >
-            Create
-          </Button>
+
+        <div className="row">
+          <div className="col col-md-4">
+            <Form className="row">
+              <Form.Label className="col-auto">Search user:</Form.Label>
+              <Form.Control
+                type="search"
+                className="col"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={handleSearch}
+              />
+            </Form>
+          </div>
+          <div className="col d-grid justify-content-end">
+            <Button
+              onClick={() => {
+                setShowAddUserModal(true);
+              }}
+            >
+              Create
+            </Button>
+          </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 mt-4">
           <b>Total: </b>
           <b className="text-success font-weight-bold">{users.length}</b> users
         </div>
