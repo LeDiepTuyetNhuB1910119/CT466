@@ -146,7 +146,10 @@ const BookList = () => {
 
         <div className="mb-4 mt-4">
           <b>Total: </b>
-          <b className="text-success font-weight-bold">{books.length}</b> books
+          <b className="text-success font-weight-bold">
+            {filteredBooks.length}
+          </b>{" "}
+          books
         </div>
 
         <div>{body}</div>

@@ -124,7 +124,7 @@ const CategoryList = () => {
         <div className="mb-4 mt-4">
           <b>Total: </b>
           <b className="text-success font-weight-bold">
-            {categories.length}
+            {filteredCategories.length}
           </b>{" "}
           categories
         </div>

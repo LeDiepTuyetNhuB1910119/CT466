@@ -149,7 +149,10 @@ const UserList = () => {
 
         <div className="mb-4 mt-4">
           <b>Total: </b>
-          <b className="text-success font-weight-bold">{users.length}</b> users
+          <b className="text-success font-weight-bold">
+            {filteredUsers.length}
+          </b>{" "}
+          users
         </div>
 
         <div>{body}</div>

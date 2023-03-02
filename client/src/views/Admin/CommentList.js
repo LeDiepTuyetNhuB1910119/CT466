@@ -132,7 +132,7 @@ const CommentList = () => {
         <div className="mb-4 mt-4">
           <b>Total: </b>
           <b className="text-success font-weight-bold">
-            {comments.length}
+            {filteredComments.length}
           </b>{" "}
           comments
         </div>
