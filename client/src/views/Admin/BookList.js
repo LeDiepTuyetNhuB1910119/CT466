@@ -1,11 +1,13 @@
 import React from "react";
 import { BookContext } from "../../contexts/BookContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
+import Form from "react-bootstrap/Form";
+
 import ActionBookAdmin from "../../components/books/ActionBookAdmin";
 import AddBookModal from "../../components/books/AddBookModal";
 import UpdateBookModal from "../../components/books/UpdateBookModal";
@@ -30,6 +32,31 @@ const BookList = () => {
     gettingBooks();
   }, []);
 
+  // useState
+  const [filteredBooks, setFilteredBooks] = useState("");
+
+  // effect set filteredBook
+  useEffect(() => {
+    const setFilter = async () => {
+      setFilteredBooks(books);
+    };
+    setFilter();
+  }, [books]);
+
+  // function handle search books
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    const searchBooks = books.filter(
+      (book) =>
+        book.title.toLowerCase().includes(query.toLowerCase()) ||
+        book.category.categoryName
+          .toLowerCase()
+          .includes(query.toLowerCase()) ||
+        book.user.username.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredBooks(searchBooks);
+  };
+
   let body = null;
 
   if (booksLoading) {
@@ -38,8 +65,8 @@ const BookList = () => {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (books.length === 0) {
-    body = <h1>Rỗng</h1>;
+  } else if (filteredBooks.length === 0) {
+    body = <p className=" text-center mt-5">Không tìm thấy thông tin</p>;
   } else {
     body = (
       <>
@@ -58,7 +85,7 @@ const BookList = () => {
               </tr>
             </thead>
             <tbody>
-              {books.map((book) => (
+              {filteredBooks.map((book) => (
                 <tr key={book._id} className="align-middle">
                   <td>{book._id}</td>
                   <td>{book.title}</td>
@@ -92,17 +119,32 @@ const BookList = () => {
     <>
       <Container>
         <h1 className="text-center mt-4 my-4">List books</h1>
-        <div className="d-grid d-md-flex justify-content-end my-4">
-          <Button
-            onClick={() => {
-              setShowAddBookModal(true);
-            }}
-          >
-            Create
-          </Button>
+
+        <div className="row">
+          <div className="col col-md-4">
+            <Form className="row">
+              <Form.Label className="col-auto">Search book:</Form.Label>
+              <Form.Control
+                type="search"
+                className="col"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={handleSearch}
+              />
+            </Form>
+          </div>
+          <div className="col d-grid justify-content-end">
+            <Button
+              onClick={() => {
+                setShowAddBookModal(true);
+              }}
+            >
+              Create
+            </Button>
+          </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 mt-4">
           <b>Total: </b>
           <b className="text-success font-weight-bold">{books.length}</b> books
         </div>
