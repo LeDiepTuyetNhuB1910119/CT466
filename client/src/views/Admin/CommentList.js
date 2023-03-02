@@ -46,7 +46,7 @@ const CommentList = () => {
       (comment) =>
         comment.content.toLowerCase().includes(query.toLowerCase()) ||
         comment.book.title.toLowerCase().includes(query.toLowerCase()) ||
-        comment.user.username.toLowerCase().includes(query.toLowerCase())
+        comment.user?.username.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredComments(searchComments);
   };
