@@ -1,11 +1,12 @@
 import React from "react";
 import { CategoryContext } from "../../contexts/CategoryContext";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
+import Form from "react-bootstrap/Form";
 
 import ActionCategoryAdmin from "../../components/categories/ActionCategoryAdmin";
 import AddCategoryModal from "../../components/categories/AddCategoryModal";
@@ -31,6 +32,26 @@ const CategoryList = () => {
     gettingCategories();
   }, []);
 
+  // useState
+  const [filteredCategories, setFilteredCategories] = useState("");
+
+  // effect set filteredBook
+  useEffect(() => {
+    const setFilter = async () => {
+      setFilteredCategories(categories);
+    };
+    setFilter();
+  }, [categories]);
+
+  // function handle search categories
+  const handleSearch = (event) => {
+    const query = event.target.value;
+    const searchCategories = categories.filter((category) =>
+      category.categoryName.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredCategories(searchCategories);
+  };
+
   let body = null;
 
   if (categoriesLoading) {
@@ -39,8 +60,8 @@ const CategoryList = () => {
         <Spinner animation="border" variant="info" />
       </div>
     );
-  } else if (categories.length === 0) {
-    body = <h1>Rỗng</h1>;
+  } else if (filteredCategories.length === 0) {
+    body = <p className=" text-center mt-5">Không tìm thấy thông tin</p>;
   } else {
     body = (
       <>
@@ -54,7 +75,7 @@ const CategoryList = () => {
               </tr>
             </thead>
             <tbody>
-              {categories.map((category) => (
+              {filteredCategories.map((category) => (
                 <tr key={category._id} className="align-middle">
                   <td>{category._id}</td>
                   <td className="text-center">{category.categoryName}</td>
@@ -75,17 +96,32 @@ const CategoryList = () => {
     <>
       <Container>
         <h1 className="text-center mt-4 my-4">List categories</h1>
-        <div className="d-grid d-md-flex justify-content-end my-4">
-          <Button
-            onClick={() => {
-              setShowAddCategoryModal(true);
-            }}
-          >
-            Create
-          </Button>
+
+        <div className="row">
+          <div className="col col-md-4">
+            <Form className="row">
+              <Form.Label className="col-auto">Search category:</Form.Label>
+              <Form.Control
+                type="search"
+                className="col"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={handleSearch}
+              />
+            </Form>
+          </div>
+          <div className="col d-grid justify-content-end">
+            <Button
+              onClick={() => {
+                setShowAddCategoryModal(true);
+              }}
+            >
+              Create
+            </Button>
+          </div>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 mt-4">
           <b>Total: </b>
           <b className="text-success font-weight-bold">
             {categories.length}
