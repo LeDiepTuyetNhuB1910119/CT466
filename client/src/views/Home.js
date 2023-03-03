@@ -1,21 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
+
 import { BookContext } from "../contexts/BookContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 import SingleBook from "../components/books/SingleBook";
+import AddBookModal from "../components/books/AddBookModal";
 
 import Spinner from "react-bootstrap/Spinner";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/esm/Container";
 import Form from "react-bootstrap/Form";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
+import Button from "react-bootstrap/Button";
+import Toast from "react-bootstrap/esm/Toast";
 
-import { AuthContext } from "../contexts/AuthContext";
+import addIcon from "../assets/plus-circle-fill.svg";
 
 const Home = () => {
   // book context
   const {
     bookState: { book, books, booksLoading },
     getBooks,
+    showToast: { show, message, type },
+    setShowToast,
+    setShowAddBookModal,
   } = useContext(BookContext);
 
   // auth context
@@ -55,6 +65,19 @@ const Home = () => {
         book.user.username.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredBooks(searchBooks);
+  };
+
+  // function handle add review book
+  const handleAddBook = async (check) => {
+    if (user) {
+      setShowAddBookModal(check);
+    } else {
+      setShowToast({
+        show: true,
+        message: "Vui lòng đăng nhập để tạo review book",
+        type: "danger",
+      });
+    }
   };
 
   let body = null;
@@ -97,6 +120,41 @@ const Home = () => {
         </Form>
 
         {body}
+
+        {/* Open Add Post Modal */}
+        <OverlayTrigger
+          placement="left"
+          overlay={<Tooltip>Add a new review book</Tooltip>}
+        >
+          <Button
+            className="btn-floating"
+            onClick={handleAddBook.bind(this, true)}
+          >
+            <img src={addIcon} alt="add-post" width="60" height="60" />
+          </Button>
+        </OverlayTrigger>
+
+        {/* Add review */}
+        <AddBookModal />
+
+        <Toast
+          show={show}
+          style={{ position: "fixed", top: "10%", right: "10px" }}
+          className={`bg-${type} text-white`}
+          onClose={() =>
+            setShowToast({
+              show: false,
+              message: "",
+              type: null,
+            })
+          }
+          delay={3000}
+          autohide
+        >
+          <Toast.Body>
+            <strong>{message}</strong>
+          </Toast.Body>
+        </Toast>
       </Container>
     </>
   );
