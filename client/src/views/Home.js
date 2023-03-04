@@ -5,6 +5,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 import SingleBook from "../components/books/SingleBook";
 import AddBookModal from "../components/books/AddBookModal";
+import UpdateBookModal from "../components/books/UpdateBookModal";
 
 import Spinner from "react-bootstrap/Spinner";
 import Row from "react-bootstrap/Row";
@@ -137,6 +138,10 @@ const Home = () => {
         {/* Add review */}
         <AddBookModal />
 
+        {/* Update review book */}
+        {book !== null && <UpdateBookModal />}
+
+        {/* Show toast */}
         <Toast
           show={show}
           style={{ position: "fixed", top: "10%", right: "10px" }}
