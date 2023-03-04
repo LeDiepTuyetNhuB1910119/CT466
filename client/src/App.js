@@ -17,6 +17,7 @@ import CategoryContextProvider from "./contexts/CategoryContext";
 import BookContextProvider from "./contexts/BookContext";
 import CommentContextProvider from "./contexts/CommentContext";
 import InfoBook from "./components/books/InfoBook";
+import DetailReviewBook from "./components/books/DetailReviewBook";
 
 function App() {
   return (
@@ -40,6 +41,11 @@ function App() {
                   <Route exact path="/" component={Landing} />
                   <ProtectedRoute exact path="/home" component={Home} />
                   <ProtectedRoute exact path="/about" component={About} />
+                  <ProtectedRoute
+                    exact
+                    path="/books/detail/:id"
+                    component={DetailReviewBook}
+                  />
                   <AdminRoute exact path="/admin" component={LandingAdmin} />
                   <AdminRoute exact path="/admin/books" component={BookList} />
                   <AdminRoute

@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { CommentContext } from "../../contexts/CommentContext";
 import { AuthContext } from "../../contexts/AuthContext";
 
+import UpdateCommentOfBookModal from "./UpdateCommentOfBookModal";
+
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -12,7 +14,6 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
 import Toast from "react-bootstrap/Toast";
-import UpdateCommentOfBookModal from "./UpdateCommentOfBookModal";
 
 const CommentsOfBook = () => {
   // auth context
@@ -96,7 +97,7 @@ const CommentsOfBook = () => {
     } else {
       setShowToast({
         show: true,
-        message: "Vui lòng đăng nhập để xóa review book",
+        message: "Vui lòng đăng nhập để xóa bình luận",
         type: "danger",
       });
     }
