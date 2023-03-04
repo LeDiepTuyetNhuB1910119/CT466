@@ -22,6 +22,7 @@ export const ADD_BOOK = "ADD_BOOK";
 export const FIND_BOOK = "FIND_BOOK";
 export const UPDATE_BOOK = "UPDATE_BOOK";
 export const DELETE_BOOK = "DELETE_BOOK";
+export const UPDATE_VIEW = "UPDATE_VIEW";
 
 export const COMMENTS_LOADED_SUCCESS = "COMMENTS_LOADED_SUCCESS";
 export const COMMENTS_LOADED_FAIL = "COMMENTS_LOADED_FAIL";

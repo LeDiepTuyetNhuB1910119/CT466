@@ -9,6 +9,7 @@ import {
   UPDATE_BOOK,
   GET_BOOK,
   DELETE_BOOK,
+  UPDATE_VIEW,
 } from "./constants";
 import axios from "axios";
 
@@ -127,6 +128,24 @@ const BookContextProvider = ({ children }) => {
     }
   };
 
+  // function count view of book
+  const countView = async (bookId) => {
+    try {
+      const response = await axios.get(`${apiUrl}/books/view/${bookId}`);
+      if (response.data.success) {
+        dispatch({
+          type: UPDATE_VIEW,
+          payload: response.data.book,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // book context data
   const bookContextData = {
     bookState,
@@ -142,6 +161,7 @@ const BookContextProvider = ({ children }) => {
     showUpdateBookModal,
     setShowUpdateBookModal,
     deleteBook,
+    countView,
   };
 
   // return

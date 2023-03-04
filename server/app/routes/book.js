@@ -12,6 +12,9 @@ router.get("/:id", BookController.getOneBook);
 // @ route get all review book by category
 router.get("/category/:id", BookController.getBooksByCategory);
 
+// @route update view of review book: /api/books/view/:id
+router.get("/view/:id", BookController.countView);
+
 // @route create review book: /api/books/
 router.post("/", verifyToken, BookController.createBook);
 

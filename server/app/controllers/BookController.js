@@ -75,6 +75,44 @@ class BookController {
     }
   }
 
+  // @route count view
+  async countView(req, res) {
+    try {
+      const bookId = req.params.id;
+      // kiểm tra có tồn tại
+      const book = await Book.findOne({ _id: bookId }); // lấy book
+      if (!book) {
+        return res.status(400).json({
+          message: "Không tìm thấy review book",
+          success: false,
+        });
+      }
+
+      // All good, update view
+      const { title, description, category, image, view } = book;
+      let viewUpdate = view + 1;
+      const updatedView = await Book.findOneAndUpdate(
+        { _id: bookId },
+        { title, description, category, image, view: viewUpdate },
+        { new: true }
+      );
+
+      if (updatedView) {
+        res.json({
+          message: "Cập nhật lượt xem thành công",
+          success: true,
+          book: updatedView,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Máy chủ không phản hồi",
+        success: false,
+      });
+    }
+  }
+
   // @route create book
   async createBook(req, res) {
     const { title, description, category, image } = req.body;

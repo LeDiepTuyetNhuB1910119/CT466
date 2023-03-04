@@ -6,6 +6,7 @@ import {
   FIND_BOOK,
   UPDATE_BOOK,
   DELETE_BOOK,
+  UPDATE_VIEW,
 } from "../contexts/constants";
 
 export const bookReducer = (state, action) => {
@@ -56,6 +57,15 @@ export const bookReducer = (state, action) => {
       return {
         ...state,
         books: state.books.filter((book) => book._id !== payload),
+      };
+
+    case UPDATE_VIEW:
+      const newBooksView = state.books.map((book) =>
+        book._id === payload._id ? payload : book
+      );
+      return {
+        ...state,
+        books: newBooksView,
       };
 
     default:
