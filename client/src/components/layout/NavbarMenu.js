@@ -75,6 +75,9 @@ const NavbarMenu = () => {
                       Admin
                     </NavDropdown.Item>
                   )}
+                  <NavDropdown.Item key="mypage" to="/mypage" as={Link}>
+                    My Page
+                  </NavDropdown.Item>
                   <NavDropdown.Item key="logout" onClick={logoutUser}>
                     Logout
                   </NavDropdown.Item>

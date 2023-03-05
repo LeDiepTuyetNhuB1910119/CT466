@@ -1,22 +1,28 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Auth from "./views/Auth";
 import Landing from "./components/layout/Landing";
+import LandingAdmin from "./components/layout/LandingAdmin";
 import Home from "./views/Home";
 import BooksByCategory from "./views/BooksByCategory";
 import About from "./views/About";
+import MyPage from "./views/MyPage";
+
 import AuthContextProvider from "./contexts/AuthContext";
-import ProtectedRoute from "./routing/ProtectedRoute";
-import AdminRoute from "./routing/AdminRoute";
-import Auth from "./views/Auth";
-import LandingAdmin from "./components/layout/LandingAdmin";
-import BookList from "./views/Admin/BookList";
-import CategoryList from "./views/Admin/CategoryList";
-import UserList from "./views/Admin/UserList";
-import CommentList from "./views/Admin/CommentList.js";
 import UserContextProvider from "./contexts/UserContext";
 import CategoryContextProvider from "./contexts/CategoryContext";
 import BookContextProvider from "./contexts/BookContext";
 import CommentContextProvider from "./contexts/CommentContext";
+
+import ProtectedRoute from "./routing/ProtectedRoute";
+import AdminRoute from "./routing/AdminRoute";
+import UserRoute from "./routing/UserRoute";
+
+import BookList from "./views/Admin/BookList";
+import CategoryList from "./views/Admin/CategoryList";
+import UserList from "./views/Admin/UserList";
+import CommentList from "./views/Admin/CommentList.js";
+
 import InfoBook from "./components/books/InfoBook";
 import DetailReviewBook from "./components/books/DetailReviewBook";
 
@@ -52,6 +58,7 @@ function App() {
                     path="/books/detail/:id"
                     component={DetailReviewBook}
                   />
+                  <UserRoute exact path="/mypage" component={MyPage} />
                   <AdminRoute exact path="/admin" component={LandingAdmin} />
                   <AdminRoute exact path="/admin/books" component={BookList} />
                   <AdminRoute
