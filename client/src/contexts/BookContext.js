@@ -4,6 +4,8 @@ import {
   apiUrl,
   BOOKS_LOADED_SUCCESS,
   BOOKS_LOADED_FAIL,
+  BOOKS_BY_CATEGORY_SUCCESS,
+  BOOKS_BY_CATEGORY_FAIL,
   ADD_BOOK,
   FIND_BOOK,
   UPDATE_BOOK,
@@ -45,6 +47,23 @@ const BookContextProvider = ({ children }) => {
       }
     } catch (error) {
       dispatch({ type: BOOKS_LOADED_FAIL });
+    }
+  };
+
+  // function getBooksByCategory
+  const getBooksByCategory = async (categoryId) => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/books/category/${categoryId}`
+      );
+      if (response.data.success) {
+        dispatch({
+          type: BOOKS_BY_CATEGORY_SUCCESS,
+          payload: response.data.books,
+        });
+      }
+    } catch (error) {
+      dispatch({ type: BOOKS_BY_CATEGORY_FAIL });
     }
   };
 
@@ -150,6 +169,7 @@ const BookContextProvider = ({ children }) => {
   const bookContextData = {
     bookState,
     getBooks,
+    getBooksByCategory,
     getOneBook,
     createBook,
     showAddBookModal,

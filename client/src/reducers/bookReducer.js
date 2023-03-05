@@ -1,6 +1,8 @@
 import {
   BOOKS_LOADED_SUCCESS,
   BOOKS_LOADED_FAIL,
+  BOOKS_BY_CATEGORY_SUCCESS,
+  BOOKS_BY_CATEGORY_FAIL,
   GET_BOOK,
   ADD_BOOK,
   FIND_BOOK,
@@ -20,6 +22,20 @@ export const bookReducer = (state, action) => {
       };
 
     case BOOKS_LOADED_FAIL:
+      return {
+        ...state,
+        books: [],
+        booksLoading: false,
+      };
+
+    case BOOKS_BY_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        books: payload,
+        booksLoading: false,
+      };
+
+    case BOOKS_BY_CATEGORY_FAIL:
       return {
         ...state,
         books: [],
