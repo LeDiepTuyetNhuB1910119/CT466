@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import lemonLogo from "../../assets/lemon.png";
 
 import { AuthContext } from "../../contexts/AuthContext";
+import { CategoryContext } from "../../contexts/CategoryContext";
 
 const NavbarMenu = () => {
   // auth context
@@ -15,6 +16,20 @@ const NavbarMenu = () => {
     authState: { user },
     logoutUser,
   } = useContext(AuthContext);
+
+  // category context
+  const {
+    categoryState: { categories },
+    getCategories,
+  } = useContext(CategoryContext);
+
+  // use effect
+  useEffect(() => {
+    const gettingCategories = async () => {
+      getCategories();
+    };
+    gettingCategories();
+  }, []);
 
   return (
     <Navbar expand="lg" bg="primary" variant="dark" className="shadow">
@@ -36,7 +51,15 @@ const NavbarMenu = () => {
               Home
             </Nav.Link>
             <NavDropdown title="Categories" id="basic-nav-dropdown">
-              {/* hiển thị list category */}
+              {categories.map((category) => (
+                <NavDropdown.Item
+                  key={category._id}
+                  to={`/category/${category._id}`}
+                  as={Link}
+                >
+                  {category.categoryName}
+                </NavDropdown.Item>
+              ))}
             </NavDropdown>
             <Nav.Link to="/about" as={Link}>
               About

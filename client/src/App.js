@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Landing from "./components/layout/Landing";
 import Home from "./views/Home";
+import BooksByCategory from "./views/BooksByCategory";
 import About from "./views/About";
 import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./routing/ProtectedRoute";
@@ -40,6 +41,11 @@ function App() {
                 <Switch>
                   <Route exact path="/" component={Landing} />
                   <ProtectedRoute exact path="/home" component={Home} />
+                  <ProtectedRoute
+                    exact
+                    path="/category/:id"
+                    component={BooksByCategory}
+                  />
                   <ProtectedRoute exact path="/about" component={About} />
                   <ProtectedRoute
                     exact
