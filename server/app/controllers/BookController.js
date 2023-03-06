@@ -46,6 +46,27 @@ class BookController {
     }
   }
 
+  // @route books by user
+  async getBooksByUser(req, res) {
+    const userId = req.params.id;
+    try {
+      const books = await Book.find({ user: userId })
+        .populate("user", ["username"])
+        .populate("category", ["categoryName"]);
+      res.json({
+        message: "Lấy danh sách review book theo user thành công",
+        success: true,
+        books,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Máy chủ không phản hồi",
+        success: false,
+      });
+    }
+  }
+
   // @route one book
   async getOneBook(req, res) {
     const bookId = req.params.id;

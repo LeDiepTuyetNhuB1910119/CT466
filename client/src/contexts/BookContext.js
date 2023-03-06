@@ -6,6 +6,8 @@ import {
   BOOKS_LOADED_FAIL,
   BOOKS_BY_CATEGORY_SUCCESS,
   BOOKS_BY_CATEGORY_FAIL,
+  BOOKS_BY_USER_SUCCESS,
+  BOOKS_BY_USER_FAIL,
   ADD_BOOK,
   FIND_BOOK,
   UPDATE_BOOK,
@@ -64,6 +66,21 @@ const BookContextProvider = ({ children }) => {
       }
     } catch (error) {
       dispatch({ type: BOOKS_BY_CATEGORY_FAIL });
+    }
+  };
+
+  // function get book of user
+  const getBooksByUser = async (userId) => {
+    try {
+      const response = await axios.get(`${apiUrl}/books/user/${userId}`);
+      if (response.data.success) {
+        dispatch({
+          type: BOOKS_BY_USER_SUCCESS,
+          payload: response.data.books,
+        });
+      }
+    } catch (error) {
+      dispatch({ type: BOOKS_BY_USER_FAIL });
     }
   };
 
@@ -170,6 +187,7 @@ const BookContextProvider = ({ children }) => {
     bookState,
     getBooks,
     getBooksByCategory,
+    getBooksByUser,
     getOneBook,
     createBook,
     showAddBookModal,
