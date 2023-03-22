@@ -128,7 +128,10 @@ const MyPage = () => {
                     className="mt-2 mb-2"
                   />
                   <Card.Text>Thể loại: {book.category.categoryName}</Card.Text>
-                  <Card.Link onClick={handleDetailBook.bind(this, book._id)}>
+                  <Card.Link
+                    style={{ cursor: "pointer" }}
+                    onClick={handleDetailBook.bind(this, book._id)}
+                  >
                     Continue reading ⟶
                   </Card.Link>
                 </Card.Body>

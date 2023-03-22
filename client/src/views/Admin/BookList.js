@@ -52,7 +52,8 @@ const BookList = () => {
         book.category.categoryName
           .toLowerCase()
           .includes(query.toLowerCase()) ||
-        book.user.username.toLowerCase().includes(query.toLowerCase())
+        book.user.username.toLowerCase().includes(query.toLowerCase()) ||
+        book.view.toString().includes(query.toLowerCase())
     );
     setFilteredBooks(searchBooks);
   };
