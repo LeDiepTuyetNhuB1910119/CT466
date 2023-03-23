@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
@@ -15,21 +16,33 @@ const CommentList = () => {
   const {
     commentState: { comments, commentsLoading },
     getComments,
+    getCommentsByBook,
+
     showToast: { show, message, type },
     setShowToast,
     setShowAddCommentModal,
   } = useContext(CommentContext);
 
-  // use effect
-  useEffect(() => {
-    const gettingComments = async () => {
-      getComments();
-    };
-    gettingComments();
-  }, []);
-
   // useState
   const [filteredComments, setFilteredComments] = useState("");
+
+  // use params
+  const params = useParams();
+
+  // use effect
+  useEffect(() => {
+    if (params.id) {
+      const gettingCommentByBook = async () => {
+        await getCommentsByBook(params.id);
+      };
+      gettingCommentByBook();
+    } else {
+      const gettingComments = async () => {
+        getComments();
+      };
+      gettingComments();
+    }
+  }, [params.id]);
 
   // effect set filteredBook
   useEffect(() => {
@@ -41,7 +54,7 @@ const CommentList = () => {
 
   // function handle search comments
   const handleSearch = (event) => {
-    const query = event.target.value;
+    let query = event.target.value;
     const searchComments = comments.filter(
       (comment) =>
         comment.content.toLowerCase().includes(query.toLowerCase()) ||
@@ -103,7 +116,11 @@ const CommentList = () => {
   return (
     <>
       <Container>
-        <h1 className="text-center mt-4 my-4">List comments</h1>
+        {params.id ? (
+          <h1 className="text-center mt-4 my-4">Comments of Book</h1>
+        ) : (
+          <h1 className="text-center mt-4 my-4">List comments</h1>
+        )}
 
         <div className="row">
           <div className="col col-md-4">

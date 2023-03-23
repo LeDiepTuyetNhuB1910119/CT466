@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import viewIcon from "../../assets/view.png";
 import editIcon from "../../assets/pencil.svg";
 import deleteIcon from "../../assets/trash.svg";
+import commentsIcon from "../../assets/comment-icon.svg";
 
 import { BookContext } from "../../contexts/BookContext";
 
@@ -20,6 +21,12 @@ const ActionBookAdmin = ({ _id }) => {
   // function view detail book
   const infoBook = (bookId) => {
     const path = `/admin/books/info/${bookId}`;
+    history.push(path);
+  };
+
+  // function view list comments of book
+  const handleListComment = async (bookId) => {
+    const path = `/admin/comments-of-book/${bookId}`;
     history.push(path);
   };
 
@@ -47,7 +54,15 @@ const ActionBookAdmin = ({ _id }) => {
         variant="outline-primary"
         onClick={infoBook.bind(this, _id)}
       >
-        <img src={viewIcon} alt="play" width="18" height="18" />
+        <img src={viewIcon} alt="play" width="24" height="24" />
+      </Button>
+      &nbsp;
+      <Button
+        className="delete-button"
+        variant="outline-primary"
+        onClick={handleListComment.bind(this, _id)}
+      >
+        <img src={commentsIcon} alt="comments" width="24" height="24" />
       </Button>
       &nbsp;
       <Button

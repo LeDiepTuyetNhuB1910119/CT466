@@ -75,9 +75,15 @@ function App() {
                   />
                   <AdminRoute
                     exact
+                    path="/admin/comments-of-book/:id"
+                    component={CommentList}
+                  />
+                  <AdminRoute
+                    exact
                     path="/admin/books/info/:id"
                     component={InfoBook}
                   />
+
                   <Route path="*" component={PageNotFound} />
                 </Switch>
               </Router>

@@ -82,7 +82,7 @@ const BookList = () => {
                 <th>Poster</th>
                 <th>View</th>
                 <th>Created At</th>
-                <th width="200">Action</th>
+                <th width="250">Action</th>
               </tr>
             </thead>
             <tbody>

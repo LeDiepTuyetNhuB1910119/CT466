@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -14,6 +16,7 @@ const AddCommentModal = () => {
     createComment,
     setShowToast,
     getComments,
+    getCommentsByBook,
   } = useContext(CommentContext);
 
   // book context
@@ -30,7 +33,10 @@ const AddCommentModal = () => {
     gettingBooks();
   }, []);
 
+  const params = useParams();
+
   // state
+
   const [newComment, setNewComment] = useState({
     book: "",
     content: "",
@@ -40,7 +46,14 @@ const AddCommentModal = () => {
 
   // function on change new comment
   const onChangeNewCommentForm = (event) => {
-    setNewComment({ ...newComment, [event.target.name]: event.target.value });
+    if (params.id) {
+      setNewComment({
+        ...newComment,
+        book: params.id,
+        [event.target.name]: event.target.value,
+      });
+    } else
+      setNewComment({ ...newComment, [event.target.name]: event.target.value });
   };
 
   // function on submit
@@ -64,7 +77,9 @@ const AddCommentModal = () => {
         type: success ? "success" : "danger",
       });
 
-      getComments();
+      if (params.id) {
+        getCommentsByBook(params.id);
+      } else getComments();
     }
   };
 
@@ -90,21 +105,24 @@ const AddCommentModal = () => {
       </Modal.Header>
       <Form onSubmit={onSubmit}>
         <Modal.Body>
-          <Form.Group className="mb-3">
-            <Form.Label>Book:</Form.Label>
-            <Form.Select
-              name="book"
-              value={book}
-              onChange={onChangeNewCommentForm}
-            >
-              <option>Please select a book</option>
-              {books.map((book) => (
-                <option key={book._id} value={book._id}>
-                  {book.title}
-                </option>
-              ))}
-            </Form.Select>
-          </Form.Group>
+          {!params.id && (
+            <Form.Group className="mb-3">
+              <Form.Label>Book:</Form.Label>
+              <Form.Select
+                name="book"
+                value={book}
+                onChange={onChangeNewCommentForm}
+              >
+                <option>Please select a book</option>
+                {books.map((book) => (
+                  <option key={book._id} value={book._id}>
+                    {book.title}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          )}
+
           <Form.Group className="mb-3">
             <Form.Label>Content:</Form.Label>
             <Form.Control
