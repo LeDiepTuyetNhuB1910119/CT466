@@ -80,7 +80,7 @@ const ActionButton = ({ _id, poster }) => {
         <img src={viewIcon} alt="play" width="24" height="24" />
       </Button>
       &nbsp;
-      {poster.username === user.username && (
+      {poster.username === user?.username || user?.isAdmin ? (
         <>
           <Button
             className="edit-button"
@@ -98,7 +98,7 @@ const ActionButton = ({ _id, poster }) => {
             <img src={deleteIcon} alt="delete" width="24" height="24" />
           </Button>
         </>
-      )}
+      ) : null}
     </>
   );
 };
