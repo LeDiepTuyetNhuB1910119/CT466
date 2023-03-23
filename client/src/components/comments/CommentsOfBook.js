@@ -129,20 +129,24 @@ const CommentsOfBook = () => {
             </Col>
             <Col className="col-9 col-lg-10">{comment.content}</Col>
             <Col className="col-1" align="end">
-              <DropdownButton variant="outline-primary" align="end" title="">
-                <Dropdown.Item
-                  key="edit-cmt"
-                  onClick={handleUpdateComment.bind(this, comment._id)}
-                >
-                  Edit
-                </Dropdown.Item>
-                <Dropdown.Item
-                  key="delete-cmt"
-                  onClick={handleDeleteComment.bind(this, comment._id)}
-                >
-                  Delete
-                </Dropdown.Item>
-              </DropdownButton>
+              {user?._id === comment.user?._id ||
+              user?._id === comment.book.user ||
+              user?.isAdmin ? (
+                <DropdownButton variant="outline-primary" align="end" title="">
+                  <Dropdown.Item
+                    key="edit-cmt"
+                    onClick={handleUpdateComment.bind(this, comment._id)}
+                  >
+                    Edit
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    key="delete-cmt"
+                    onClick={handleDeleteComment.bind(this, comment._id)}
+                  >
+                    Delete
+                  </Dropdown.Item>
+                </DropdownButton>
+              ) : null}
             </Col>
           </Row>
         ))}
