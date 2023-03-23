@@ -12,7 +12,7 @@ import deleteIcon from "../../assets/trash.svg";
 
 // component con của component SingleBook
 
-const ActionButton = ({ _id }) => {
+const ActionButton = ({ _id, poster }) => {
   // auth context
   const {
     authState: { user },
@@ -80,21 +80,25 @@ const ActionButton = ({ _id }) => {
         <img src={viewIcon} alt="play" width="24" height="24" />
       </Button>
       &nbsp;
-      <Button
-        className="edit-button"
-        variant="outline-info"
-        onClick={handleUpdateBook.bind(this, _id)}
-      >
-        <img src={editIcon} alt="edit" width="24" height="24" />
-      </Button>
-      &nbsp;
-      <Button
-        className="delete-button"
-        variant="outline-info"
-        onClick={handleDeleteBook.bind(this, _id)}
-      >
-        <img src={deleteIcon} alt="delete" width="24" height="24" />
-      </Button>
+      {poster.username === user.username && (
+        <>
+          <Button
+            className="edit-button"
+            variant="outline-info"
+            onClick={handleUpdateBook.bind(this, _id)}
+          >
+            <img src={editIcon} alt="edit" width="24" height="24" />
+          </Button>
+          &nbsp;
+          <Button
+            className="delete-button"
+            variant="outline-info"
+            onClick={handleDeleteBook.bind(this, _id)}
+          >
+            <img src={deleteIcon} alt="delete" width="24" height="24" />
+          </Button>
+        </>
+      )}
     </>
   );
 };

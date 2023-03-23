@@ -28,7 +28,7 @@ const SingleBook = ({
       <Card.Body style={{ textAlign: "center" }}>
         <Card.Title className="text-success">{title}</Card.Title>
         <Card.Text>{view > 0 ? `${view} views` : "0 view"}</Card.Text>
-        <ActionButton _id={_id} />
+        <ActionButton _id={_id} poster={user} />
       </Card.Body>
       <Card.Footer>
         <div>Post by {user ? user.username : "unknow"}</div>
