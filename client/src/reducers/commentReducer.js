@@ -7,6 +7,7 @@ import {
   ADD_COMMENT,
   FIND_COMMENT,
   UPDATE_COMMENT,
+  UPDATE_STATE_COMMENT,
 } from "../contexts/constants";
 
 export const commentReducer = (state, action) => {
@@ -65,6 +66,15 @@ export const commentReducer = (state, action) => {
       return {
         ...state,
         comments: newComments,
+      };
+
+    case UPDATE_STATE_COMMENT:
+      const newStateComments = state.comments.map((comment) =>
+        comment._id === payload._id ? payload : comment
+      );
+      return {
+        ...state,
+        comments: newStateComments,
       };
 
     default:

@@ -10,6 +10,7 @@ import {
   ADD_COMMENT,
   FIND_COMMENT,
   UPDATE_COMMENT,
+  UPDATE_STATE_COMMENT,
 } from "../contexts/constants";
 
 import axios from "axios";
@@ -134,6 +135,24 @@ const CommentContextProvider = ({ children }) => {
     }
   };
 
+  // function update state of comment
+  const updateShowComment = async (commentId) => {
+    try {
+      const response = await axios.put(`${apiUrl}/comments/state/${commentId}`);
+      if (response.data.success) {
+        dispatch({
+          type: UPDATE_STATE_COMMENT,
+          payload: response.data.comment,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // context data
   const commentContextData = {
     commentState,
@@ -147,6 +166,7 @@ const CommentContextProvider = ({ children }) => {
     setShowAddCommentModal,
     findComment,
     updateComment,
+    updateShowComment,
     showUpdateCommentOfBookModal,
     setShowUpdateCommentOfBookModal,
   };
