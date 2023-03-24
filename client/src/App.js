@@ -7,6 +7,7 @@ import Home from "./views/Home";
 import BooksByCategory from "./views/BooksByCategory";
 import About from "./views/About";
 import MyPage from "./views/MyPage";
+import PageBlock from "./views/PageBlock";
 import PageNotFound from "./views/PageNotFound";
 
 import AuthContextProvider from "./contexts/AuthContext";
@@ -83,7 +84,7 @@ function App() {
                     path="/admin/books/info/:id"
                     component={InfoBook}
                   />
-
+                  <Route path="/block" component={PageBlock} />
                   <Route path="*" component={PageNotFound} />
                 </Switch>
               </Router>

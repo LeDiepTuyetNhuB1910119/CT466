@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Redirect, Route } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Spinner from "react-bootstrap/Spinner";
@@ -9,7 +9,7 @@ import NavbarMenu from "../components/layout/NavbarMenu";
 // ...rest là những điều kiện còn lại
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const {
-    authState: { authLoading, isAuthenticated },
+    authState: { authLoading, user },
   } = useContext(AuthContext);
 
   if (authLoading) {
@@ -22,15 +22,19 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
   return (
     // check điều kiện ...rest để render
-    <Route
-      {...rest}
-      render={(props) => (
-        <>
-          <NavbarMenu />
-          <Component {...rest} {...props} />
-        </>
-      )}
-    />
+    user?.state === "block" ? (
+      <Redirect to="/block" />
+    ) : (
+      <Route
+        {...rest}
+        render={(props) => (
+          <>
+            <NavbarMenu />
+            <Component {...rest} {...props} />
+          </>
+        )}
+      />
+    )
   );
 };
 
