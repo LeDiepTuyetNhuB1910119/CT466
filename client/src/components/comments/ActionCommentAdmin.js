@@ -42,7 +42,6 @@ const ActionCommentAdmin = ({ _id, userComment, show }) => {
     if (location.pathname === "/admin/comments") {
       getComments();
     } else {
-      console.log(params.id);
       getCommentsByBook(params.id);
     }
   };
