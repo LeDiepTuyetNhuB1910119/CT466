@@ -15,6 +15,9 @@ router.post("/book/:id", verifyToken, CommentController.createComment);
 // @route update comment: /api/comment/:id
 router.put("/:id", verifyToken, CommentController.updateComment);
 
+// @route put state of comment
+router.put("/state/:id", verifyToken, CommentController.updateShowComment);
+
 // @route delete comment: /ai/comment/:id
 router.delete("/:id", verifyToken, CommentController.deleteComment);
 

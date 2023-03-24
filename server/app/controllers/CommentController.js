@@ -139,6 +139,56 @@ class CommentController {
     }
   }
 
+  // @route Update show comment
+  async updateShowComment(req, res) {
+    const commentId = req.params.id;
+    // kiểm tra có tồn tại
+    const comment = await Comment.findOne({ _id: commentId })
+      .populate("user", ["_id", "username"])
+      .populate("book", ["title", "user"]); // lấy comment
+    if (!comment) {
+      return res.status(400).json({
+        message: "Không tìm thấy comment",
+        success: false,
+      });
+    }
+
+    const idUserRequest = req.user._id; // user muốn xóa update state comment
+    const userIsAdmin = req.user.isAdmin; // kiểm tra user muốn update có là admin k
+    const posterOfBook = comment.book.user.toString(); // lấy user post bài review
+    try {
+      if (idUserRequest === posterOfBook || userIsAdmin) {
+        let { content, user, book, show } = comment;
+        show = !show;
+
+        const updatedShowComment = await Comment.findOneAndUpdate(
+          { _id: commentId },
+          { content, user, book, show },
+          { new: true }
+        );
+
+        if (updatedShowComment) {
+          res.json({
+            message: "Cập nhật trạng thái comment thành công",
+            success: true,
+            comment: updatedShowComment,
+          });
+        }
+      } else {
+        return res.status(400).json({
+          message: "User không có quyền cập nhật trạng thái comment",
+          success: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Máy chủ không phản hồi",
+        success: false,
+      });
+    }
+  }
+
   // @route delete one comment
   async deleteComment(req, res) {
     try {
