@@ -3,6 +3,7 @@ import {
   USERS_LOADED_FAIL,
   DELETE_USER,
   ADD_USER,
+  UPDATE_STATE_USER,
 } from "../contexts/constants";
 
 export const userReducer = (state, action) => {
@@ -29,6 +30,14 @@ export const userReducer = (state, action) => {
       return {
         ...state,
         users: [...state.users, payload],
+      };
+    case UPDATE_STATE_USER:
+      const newUsers = state.users.map((user) =>
+        user._id === payload._id ? payload : user
+      );
+      return {
+        ...state,
+        users: newUsers,
       };
     default:
       return state;

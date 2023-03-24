@@ -6,6 +6,7 @@ import {
   USERS_LOADED_FAIL,
   DELETE_USER,
   ADD_USER,
+  UPDATE_STATE_USER,
 } from "./constants";
 import axios from "axios";
 
@@ -80,6 +81,24 @@ const UserContextProvider = ({ children }) => {
     }
   };
 
+  // function update state of user
+  const updateStateUser = async (userId) => {
+    try {
+      const response = await axios.put(`${apiUrl}/users/state/${userId}`);
+      if (response.data.success) {
+        dispatch({
+          type: UPDATE_STATE_USER,
+          payload: response.data.user,
+        });
+        return response.data;
+      }
+    } catch (error) {
+      return error.response.data
+        ? error.response.data
+        : { success: false, message: "Server error" };
+    }
+  };
+
   // context data
   const userContextData = {
     userState,
@@ -90,6 +109,7 @@ const UserContextProvider = ({ children }) => {
     showAddUserModal,
     setShowAddUserModal,
     createUser,
+    updateStateUser,
   };
 
   // return
