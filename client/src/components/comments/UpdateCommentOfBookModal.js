@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -15,6 +15,7 @@ const UpdateCommentOfBookModal = () => {
     setShowUpdateCommentOfBookModal,
     updateComment,
     setShowToast,
+    getComments,
     getCommentsByBook,
   } = useContext(CommentContext);
 
@@ -34,6 +35,9 @@ const UpdateCommentOfBookModal = () => {
   // use params
   const params = useParams();
 
+  // use location
+  const location = useLocation();
+
   // function on submit
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -51,7 +55,12 @@ const UpdateCommentOfBookModal = () => {
       type: success ? "success" : "danger",
     });
 
-    getCommentsByBook(params.id);
+    if (location.pathname === "/admin/comments") {
+      getComments();
+    } else {
+      console.log(params.id);
+      getCommentsByBook(params.id);
+    }
   };
 
   // function close dialog

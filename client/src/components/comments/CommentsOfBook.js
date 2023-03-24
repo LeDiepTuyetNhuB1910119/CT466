@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import { CommentContext } from "../../contexts/CommentContext";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -24,17 +24,22 @@ const CommentsOfBook = () => {
   // comment context
   const {
     commentState: { comment, comments, commentsLoading },
+    getComments,
     getCommentsByBook,
     deleteComment,
     showToast: { show, message, type },
     setShowToast,
     createComment,
     findComment,
+    updateShowComment,
     setShowUpdateCommentOfBookModal,
   } = useContext(CommentContext);
 
   // use params
   const params = useParams();
+
+  // use location
+  const location = useLocation();
 
   // use effect
   useEffect(() => {
@@ -109,6 +114,21 @@ const CommentsOfBook = () => {
     setShowUpdateCommentOfBookModal(true);
   };
 
+  // function handle hide comment
+  const handleHideComment = async (commentId) => {
+    const { success, message } = await updateShowComment(commentId);
+    setShowToast({
+      show: true,
+      message,
+      type: success ? "success" : "danger",
+    });
+    if (location.pathname === "/admin/comments") {
+      getComments();
+    } else {
+      getCommentsByBook(params.id);
+    }
+  };
+
   let body = null;
 
   if (commentsLoading) {
@@ -122,34 +142,53 @@ const CommentsOfBook = () => {
   } else {
     body = (
       <>
-        {comments.map((comment) => (
-          <Row className="row-cols-3 mt-4" key={comment._id}>
-            <Col className="col-2 col-lg-1">
-              <div>{comment.user ? comment.user.username : "unknow"}:</div>
-            </Col>
-            <Col className="col-9 col-lg-10">{comment.content}</Col>
-            <Col className="col-1" align="end">
-              {user?._id === comment.user?._id ||
-              user?._id === comment.book.user ||
-              user?.isAdmin ? (
-                <DropdownButton variant="outline-primary" align="end" title="">
-                  <Dropdown.Item
-                    key="edit-cmt"
-                    onClick={handleUpdateComment.bind(this, comment._id)}
-                  >
-                    Edit
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    key="delete-cmt"
-                    onClick={handleDeleteComment.bind(this, comment._id)}
-                  >
-                    Delete
-                  </Dropdown.Item>
-                </DropdownButton>
-              ) : null}
-            </Col>
-          </Row>
-        ))}
+        {comments.map(
+          (comment) =>
+            comment.show && (
+              <Row className="row-cols-3 mt-4" key={comment._id}>
+                <Col className="col-2 col-lg-1">
+                  <div>{comment.user ? comment.user.username : "unknow"}:</div>
+                </Col>
+                <Col className="col-9 col-lg-10">{comment.content}</Col>
+                <Col className="col-1" align="end">
+                  {user?._id === comment.user?._id ||
+                  user?._id === comment.book.user ||
+                  user?.isAdmin ? (
+                    <DropdownButton
+                      variant="outline-primary"
+                      align="end"
+                      title=""
+                    >
+                      {user?._id === comment.book.user || user?.isAdmin ? (
+                        <Dropdown.Item
+                          key="hide-cmt"
+                          onClick={handleHideComment.bind(this, comment._id)}
+                        >
+                          Hide
+                        </Dropdown.Item>
+                      ) : null}
+
+                      {user?._id === comment.user?._id && (
+                        <Dropdown.Item
+                          key="edit-cmt"
+                          onClick={handleUpdateComment.bind(this, comment._id)}
+                        >
+                          Edit
+                        </Dropdown.Item>
+                      )}
+
+                      <Dropdown.Item
+                        key="delete-cmt"
+                        onClick={handleDeleteComment.bind(this, comment._id)}
+                      >
+                        Delete
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  ) : null}
+                </Col>
+              </Row>
+            )
+        )}
       </>
     );
   }

@@ -10,11 +10,12 @@ import Form from "react-bootstrap/Form";
 import { CommentContext } from "../../contexts/CommentContext";
 import ActionCommentAdmin from "../../components/comments/ActionCommentAdmin";
 import AddCommentModal from "../../components/comments/AddCommentModal";
+import UpdateCommentOfBookModal from "../../components/comments/UpdateCommentOfBookModal";
 
 const CommentList = () => {
   // comment context
   const {
-    commentState: { comments, commentsLoading },
+    commentState: { comment, comments, commentsLoading },
     getComments,
     getCommentsByBook,
 
@@ -86,6 +87,7 @@ const CommentList = () => {
                 <th width="200">Book</th>
                 <th width="100">Poster</th>
                 <th width="150">Created At</th>
+                <th width="100">Show</th>
                 <th width="200">Action</th>
               </tr>
             </thead>
@@ -102,7 +104,14 @@ const CommentList = () => {
                     {comment.createdAt.slice(0, 10)}
                   </td>
                   <td className="text-center">
-                    <ActionCommentAdmin _id={comment._id} />
+                    {comment.show ? "true" : "false"}
+                  </td>
+                  <td className="text-center">
+                    <ActionCommentAdmin
+                      _id={comment._id}
+                      userComment={comment.user}
+                      show={comment.show}
+                    />
                   </td>
                 </tr>
               ))}
@@ -158,6 +167,9 @@ const CommentList = () => {
 
         {/* add comment */}
         <AddCommentModal />
+
+        {/* update comment */}
+        {comment !== null && <UpdateCommentOfBookModal />}
 
         {/* show toast */}
         <Toast
