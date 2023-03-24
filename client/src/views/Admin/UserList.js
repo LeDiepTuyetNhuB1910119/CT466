@@ -17,6 +17,7 @@ const UserList = () => {
     userState: { users, usersLoading },
     getUsers,
     deleteUser,
+    updateStateUser,
     showToast: { show, message, type },
     setShowToast,
     setShowAddUserModal,
@@ -63,6 +64,16 @@ const UserList = () => {
     });
   };
 
+  // function handler update state user
+  const handlerUpdateStateUser = async (userId) => {
+    const { success, message } = await updateStateUser(userId);
+    setShowToast({
+      show: true,
+      message,
+      type: success ? "success" : "danger",
+    });
+  };
+
   let body = null;
 
   if (usersLoading) {
@@ -83,6 +94,7 @@ const UserList = () => {
                 <th width="250">ID</th>
                 <th>Username</th>
                 <th>Is Admin</th>
+                <th>State</th>
                 <th width="200">Action</th>
               </tr>
             </thead>
@@ -94,7 +106,17 @@ const UserList = () => {
                   <td className="text-center">
                     {user.isAdmin ? "true" : "false"}
                   </td>
+                  <td className="text-center">{user.state}</td>
                   <td className="text-center">
+                    <Button
+                      className="state-button"
+                      variant="outline-primary"
+                      style={{ width: "75px" }}
+                      onClick={handlerUpdateStateUser.bind(this, user._id)}
+                    >
+                      {user.state === "active" ? "Active" : "Block"}
+                    </Button>
+                    &nbsp;
                     <Button
                       className="delete-button"
                       variant="outline-primary"
