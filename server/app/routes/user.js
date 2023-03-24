@@ -12,4 +12,7 @@ router.post("/", isAdmin, UserController.createUser);
 // @route delete user
 router.delete("/:id", isAdmin, UserController.deleteUser);
 
+// @route put state of user
+router.put("/state/:id", isAdmin, UserController.updateStateUser);
+
 module.exports = router;

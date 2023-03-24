@@ -151,6 +151,45 @@ class UserController {
     }
   }
 
+  // @route Update state of user
+  async updateStateUser(req, res) {
+    const userId = req.params.id;
+    // kiểm tra có tồn tại
+    const user = await User.findOne({ _id: userId }); // lấy user
+    if (!user) {
+      return res.status(400).json({
+        message: "Không tìm thấy user",
+        success: false,
+      });
+    }
+    try {
+      let { username, password, isAdmin, state } = user;
+      if (state === "active") {
+        state = "block";
+      } else state = "active";
+
+      const updatedStateUser = await User.findOneAndUpdate(
+        { _id: userId },
+        { username, password, isAdmin, state },
+        { new: true }
+      );
+
+      if (updatedStateUser) {
+        res.json({
+          message: "Cập nhật state user thành công",
+          success: true,
+          user: updatedStateUser,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Máy chủ không phản hồi",
+        success: false,
+      });
+    }
+  }
+
   // @route Register user
   async register(req, res) {
     const { username, password, confirmPassword } = req.body;
@@ -196,6 +235,7 @@ class UserController {
           _id: newUser._id,
           username: newUser.username,
           isAdmin: newUser.isAdmin,
+          state: newUser.state,
         },
         process.env.ACCESS_TOKEN_SECRET
       );
@@ -239,6 +279,12 @@ class UserController {
       if (!passwordValid)
         return res.status(400).json({
           message: "Nhập sai username hoặc password",
+          success: false,
+        });
+
+      if (user.state === "block")
+        return res.status(400).json({
+          message: "Tài khoản đang bị block, vui lòng đăng nhập sau",
           success: false,
         });
 
