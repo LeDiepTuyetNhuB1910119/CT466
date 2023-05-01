@@ -36,17 +36,17 @@ function App() {
           <BookContextProvider>
             <CommentContextProvider>
               <Router>
-                <Route
-                  exact
-                  path="/login"
-                  render={(props) => <Auth {...props} authRoute="login" />}
-                />
-                <Route
-                  exact
-                  path="/register"
-                  render={(props) => <Auth {...props} authRoute="register" />}
-                />
                 <Switch>
+                  <Route
+                    exact
+                    path="/login"
+                    render={(props) => <Auth {...props} authRoute="login" />}
+                  />
+                  <Route
+                    exact
+                    path="/register"
+                    render={(props) => <Auth {...props} authRoute="register" />}
+                  />
                   <Route exact path="/" component={Landing} />
                   <ProtectedRoute exact path="/home" component={Home} />
                   <ProtectedRoute
