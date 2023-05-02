@@ -198,27 +198,30 @@ const CommentsOfBook = () => {
       <h3 className="mt-6 my-4">
         {comments.length !== 0 ? comments.length + " " : null}Comments
       </h3>
-      <Row>
-        <div className="form-group">
-          <textarea
-            className="form-control"
-            placeholder="Enter your comment"
-            rows="3"
-            name="content"
-            value={content}
-            onChange={onChangeNewComment}
-          ></textarea>
-        </div>
-        <div className="mt-2 mb-2 d-grid d-md-flex justify-content-end">
-          <Button variant="secondary" onClick={resetCommentData}>
-            Cancel
-          </Button>
-          &nbsp;
-          <Button variant="primary" type="submit" onClick={onSubmit}>
-            Submit
-          </Button>
-        </div>
-      </Row>
+
+      {user?._id && (
+        <Row>
+          <div className="form-group">
+            <textarea
+              className="form-control"
+              placeholder="Enter your comment"
+              rows="3"
+              name="content"
+              value={content}
+              onChange={onChangeNewComment}
+            ></textarea>
+          </div>
+          <div className="mt-2 mb-2 d-grid d-md-flex justify-content-end">
+            <Button variant="secondary" onClick={resetCommentData}>
+              Cancel
+            </Button>
+            &nbsp;
+            <Button variant="primary" type="submit" onClick={onSubmit}>
+              Submit
+            </Button>
+          </div>
+        </Row>
+      )}
 
       <div>{body}</div>
 
