@@ -123,17 +123,19 @@ const Home = () => {
         {body}
 
         {/* Open Add Post Modal */}
-        <OverlayTrigger
-          placement="left"
-          overlay={<Tooltip>Add a new review book</Tooltip>}
-        >
-          <Button
-            className="btn-floating"
-            onClick={handleAddBook.bind(this, true)}
+        {user?._id && (
+          <OverlayTrigger
+            placement="left"
+            overlay={<Tooltip>Add a new review book</Tooltip>}
           >
-            <img src={addIcon} alt="add-post" width="60" height="60" />
-          </Button>
-        </OverlayTrigger>
+            <Button
+              className="btn-floating"
+              onClick={handleAddBook.bind(this, true)}
+            >
+              <img src={addIcon} alt="add-post" width="60" height="60" />
+            </Button>
+          </OverlayTrigger>
+        )}
 
         {/* Add review */}
         <AddBookModal />
