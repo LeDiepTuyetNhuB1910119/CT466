@@ -173,7 +173,7 @@ const AddBookModal = () => {
               {image ? (
                 <Image src={image} alt="img-view" width="100%" />
               ) : (
-                <p>Product image upload preview will appear here!</p>
+                <p>Book image upload preview will appear here!</p>
               )}
             </Col>
           </Row>
