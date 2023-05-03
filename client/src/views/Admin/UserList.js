@@ -117,18 +117,20 @@ const UserList = () => {
                       {user.state === "active" ? "Active" : "Block"}
                     </Button>
                     &nbsp;
-                    <Button
-                      className="delete-button"
-                      variant="outline-primary"
-                      onClick={handlerDeleteUser.bind(this, user._id)}
-                    >
-                      <img
-                        src={deleteIcon}
-                        alt="delete"
-                        width="24"
-                        height="24"
-                      />
-                    </Button>
+                    {user.username !== "nhu" && (
+                      <Button
+                        className="delete-button"
+                        variant="outline-primary"
+                        onClick={handlerDeleteUser.bind(this, user._id)}
+                      >
+                        <img
+                          src={deleteIcon}
+                          alt="delete"
+                          width="24"
+                          height="24"
+                        />
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}
