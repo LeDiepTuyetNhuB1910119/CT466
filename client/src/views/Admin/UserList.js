@@ -1,5 +1,7 @@
 import React from "react";
 import { UserContext } from "../../contexts/UserContext";
+import { AuthContext } from "../../contexts/AuthContext";
+
 import { useContext, useEffect, useState } from "react";
 
 import Spinner from "react-bootstrap/Spinner";
@@ -22,6 +24,9 @@ const UserList = () => {
     setShowToast,
     setShowAddUserModal,
   } = useContext(UserContext);
+
+  // auth context
+  const { authState } = useContext(AuthContext);
 
   // effect
   // effect get all users
@@ -117,7 +122,8 @@ const UserList = () => {
                       {user.state === "active" ? "Active" : "Block"}
                     </Button>
                     &nbsp;
-                    {user.username !== "nhu" && (
+                    {authState.user.username === "nhu" &&
+                    user.username !== "nhu" ? (
                       <Button
                         className="delete-button"
                         variant="outline-primary"
@@ -130,6 +136,21 @@ const UserList = () => {
                           height="24"
                         />
                       </Button>
+                    ) : (
+                      !user.isAdmin && (
+                        <Button
+                          className="delete-button"
+                          variant="outline-primary"
+                          onClick={handlerDeleteUser.bind(this, user._id)}
+                        >
+                          <img
+                            src={deleteIcon}
+                            alt="delete"
+                            width="24"
+                            height="24"
+                          />
+                        </Button>
+                      )
                     )}
                   </td>
                 </tr>

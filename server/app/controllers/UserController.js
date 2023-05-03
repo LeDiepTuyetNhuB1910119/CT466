@@ -35,12 +35,13 @@ class UserController {
         });
       }
 
-      if (user.isAdmin) {
-        return res.status(400).json({
-          message: "Không thể xóa admin",
-          success: false,
-        });
-      }
+      // if (user.isAdmin) {
+      //   console.log(user.username);
+      //   return res.status(400).json({
+      //     message: "Không thể xóa admin",
+      //     success: false,
+      //   });
+      // }
 
       // All good, delete user
 
